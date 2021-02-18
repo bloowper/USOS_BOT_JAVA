@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Collections;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.*;
 import java.util.List;
 import java.util.Vector;
 
@@ -22,7 +24,7 @@ public class CourseControler {
 
     public void add(CourseModel model){
         models.add(model);
-        int courseID = model.getCourseID();
+        int courseID = model.getID();
         String name = model.getName();
         String link = model.getLink();
         Vector<String> stringVector = new Vector<>(List.of(String.valueOf(courseID), name, link));
@@ -42,6 +44,29 @@ public class CourseControler {
         return viewData;
     }
 
+    public void deleteByID(Integer id){
+        models.removeIf(model -> model.getID()==id);
+        viewData.removeIf(strings -> Integer.parseInt(strings.get(0))==id);
+        SwingUtilities.updateComponentTreeUI(view);
+    }
+
+    public void saveToXml(File file) throws FileNotFoundException {
+        XMLEncoder xmlEncoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
+        xmlEncoder.writeObject(models);
+        xmlEncoder.flush();
+        xmlEncoder.close();
+    }
+
+    public void readFromXml(File file) throws FileNotFoundException {
+        XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)));
+        Vector<CourseModel> courseModels = (Vector<CourseModel>) xmlDecoder.readObject();
+
+        viewData.removeIf(strings -> true);
+        models.removeIf(model -> true);
+        System.out.printf("Reads : %d number of courses\n",courseModels.size());
+        courseModels.stream().forEach(this::add);
+
+    }
 
 
     class MouseEventCourseControler extends MouseAdapter {
@@ -57,8 +82,6 @@ public class CourseControler {
             jTextFieldidID = new JTextField();
             jTextFieldInstructor1 = new JTextField();
             jTextFieldInstructor2 = new JTextField();
-
-
         }
 
         @Override
@@ -67,11 +90,11 @@ public class CourseControler {
             int row = source.rowAtPoint(e.getPoint());
             if(e.getClickCount()==2 && row!=-1){
                 Integer courseID = Integer.parseInt(viewData.get(row).get(0));
-                CourseModel courseModel = models.stream().filter(model -> model.getCourseID() == courseID).findFirst().get();
+                CourseModel courseModel = models.stream().filter(model -> model.getID() == courseID).findFirst().get();
                 System.out.println(courseModel);
                 jTextFieldName.setText(courseModel.getName());
                 jTextFieldLink.setText(courseModel.getLink());
-                jTextFieldidID.setText(String.valueOf(courseModel.getCourseID()));
+                jTextFieldidID.setText(String.valueOf(courseModel.getID()));
                 jTextFieldInstructor1.setText(courseModel.getCourseInstructorsIDs().get(0).toString());
                 jTextFieldInstructor2.setText(courseModel.getCourseInstructorsIDs().get(1).toString());
                 Object[] fields = {
@@ -99,7 +122,7 @@ public class CourseControler {
                         break out;
                     }
                     //model update
-                    courseModel.setCourseID(newCourseID);
+                    courseModel.setID(newCourseID);
                     courseModel.setLink(newLinkText);
                     courseModel.setName(newNameText);
                     courseModel.getCourseInstructorsIDs().set(0,newInstructor1ID);

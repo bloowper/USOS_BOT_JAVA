@@ -1,22 +1,25 @@
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
-import java.util.stream.*;
+
 import static java.util.stream.Collectors.*;
 
 
 public class CourseModel implements Serializable {
     protected String name;
     protected String link;
-    protected Integer courseID;
+    protected int ID;
     protected Vector<Integer> courseInstructorsIDs;
 
     public CourseModel(String name, String link, int courseID, Vector<Integer> courseInstructorsIDs) {
         this.name = name;
         this.link = link;
-        this.courseID = courseID;
+        this.ID = courseID;
         this.courseInstructorsIDs = courseInstructorsIDs;
+    }
+
+    public CourseModel() {
+
     }
 
     public String getName() {
@@ -35,12 +38,12 @@ public class CourseModel implements Serializable {
         this.link = link;
     }
 
-    public int getCourseID() {
-        return courseID;
+    public int getID() {
+        return ID;
     }
 
-    public void setCourseID(int courseID) {
-        this.courseID = courseID;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public Vector<Integer> getCourseInstructorsIDs() {
@@ -51,12 +54,14 @@ public class CourseModel implements Serializable {
         this.courseInstructorsIDs = courseInstructorsIDs;
     }
 
+
+
     @Override
     public String toString() {
         return "CourseModel{" +
                 "name='" + name + '\'' +
                 ", link='" + link + '\'' +
-                ", courseID=" + courseID +
+                ", ID=" + ID +
                 ", courseInstructorsIDs=" + courseInstructorsIDs +
                 '}';
     }
@@ -66,7 +71,7 @@ public class CourseModel implements Serializable {
      */
     public ArrayList<String> getInstructorsXpaths(){
         return courseInstructorsIDs.stream()
-                        .map(instructorID -> String.format("//input[@name='zajecia[%d][]' and @value='%d']", courseID, instructorID))
+                        .map(instructorID -> String.format("//input[@name='zajecia[%d][]' and @value='%d']", ID, instructorID))
                         .collect(toCollection(ArrayList::new));
     }
 

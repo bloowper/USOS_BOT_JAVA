@@ -27,6 +27,7 @@ public class courseView extends JTable {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
+
     public void addAll(Vector<Vector<String>> multipleCourseRepresentation){
         viewsData.addAll(multipleCourseRepresentation);
         SwingUtilities.updateComponentTreeUI(this);

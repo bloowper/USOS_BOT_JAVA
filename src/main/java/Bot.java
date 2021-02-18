@@ -31,6 +31,7 @@ public class Bot implements Runnable {
 
     public void setModels(Vector<CourseModel> models){
         this.models = models;
+
     }
 
 
@@ -100,7 +101,8 @@ public class Bot implements Runnable {
                     }
                     if(nonActiveInformationShowed)
                     System.out.println("oczekiwanie zakonczone: rejestracja rozpoczeta");
-                    //registerButton.click();
+                    if(registerMode)
+                        registerButton.click();
                 }
             }
 
@@ -113,7 +115,7 @@ public class Bot implements Runnable {
 
 
 /**
- * ONLY FOR TESTING PURPOSE
+ * ONLY FOR "TESTING" PURPOSE while writing code
  */
 class BotTestRunner{
     public static void main(String[] args) {
