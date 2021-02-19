@@ -14,10 +14,15 @@ public class GUI extends JFrame implements Runnable {
     CourseControler courseControler;
     Bot bot;
 
+    JPasswordField passord;
+    JTextField login;
+
     public GUI() throws HeadlessException {
         super();
         courseControler = new CourseControler();
         jMenuBar = new jMenuBarGUI();
+        login = new JTextField("login");
+        passord = new JPasswordField("haslo");
         bot = new Bot("https://login.uj.edu.pl/login?service=https%3A%2F%2Fwww.usosweb.uj.edu.pl%2Fkontroler.php%3F_action%3Dlogowaniecas%2Findex&locale=pl");
     }
 
@@ -28,9 +33,13 @@ public class GUI extends JFrame implements Runnable {
         setLayout(new GridBagLayout());
         var c = new GridBagConstraints();
 
+
+        createLogginBar();
+
         c.gridx=0;
         c.gridy=1;
-        c.gridwidth=3;
+        c.gridwidth=4;
+        c.gridheight=4;
         getContentPane().add(new JScrollPane(courseControler.getView()),c);
 
         Vector<CourseModel> courseModels = new Vector<>();
@@ -41,6 +50,30 @@ public class GUI extends JFrame implements Runnable {
         pack();
         setResizable(false);
         setVisible(true);
+    }
+
+    private void createLogginBar() {
+        JPanel logginTable = new JPanel();
+        logginTable.setLayout(new BoxLayout(logginTable,BoxLayout.X_AXIS));
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx=0;
+        c.gridy=0;
+        c.gridwidth=4;
+        c.gridheight=1;
+
+        JTextArea logintext = new JTextArea("login");
+        logintext.setFocusable(false);
+        logginTable.add(logintext);
+        this.login.setPreferredSize(new Dimension(200,20));
+        logginTable.add(this.login);
+
+        JTextArea passwodtext = new JTextArea("haslo");
+        passwodtext.setFocusable(false);
+        logginTable.add(passwodtext);
+        passord.setPreferredSize(new Dimension(100,20));
+        logginTable.add(passord);
+        getContentPane().add(logginTable, c);
+
     }
 
     class jMenuBarGUI extends JMenuBar{
@@ -62,7 +95,7 @@ public class GUI extends JFrame implements Runnable {
             kursy = new JMenu("KURSY");
                 kursy_dodajNowy = new JMenuItem("dodaj nowy kurs");
                 kursy_usun_zaznaczone = new JMenuItem("usun zaznaczone kursy");
-                kursy_zapisz_do_pliku = new JMenuItem("Zapisz dodane kursy do pliku");
+                kursy_zapisz_do_pliku = new JMenuItem("Zapisz kursy");
                 kursy_odczyt = new JMenuItem("Wczytaj kursy");
                 add(kursy);
                 kursy.add(kursy_dodajNowy);
@@ -92,28 +125,14 @@ public class GUI extends JFrame implements Runnable {
         public void actionPerformed(ActionEvent e) {
             bot.setModels(courseControler.getModels());
 
-        //TESTING
-            String login = null;
-            String password = null;
-            try(var br = new BufferedReader(new FileReader("src/main/java/password.txt"))){
-                login = br.readLine();
-                password = br.readLine();
-            }catch (FileNotFoundException exception) {
-                File file = new File("src/main/java/password.txt");
-                try {
-                    if(file.createNewFile()){
-                        System.out.println("src/main/java/password.txt\n1st line login 2nd line password\nfile is added to git ignore");
-                    }
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
+        //ZMIENIC TO BY UZYTKOWNIK DOPIERO W PRZEGLADARCE WPROWADZAL DANE
+        //bezpieczniej
+            String log = login.getText();
+            String pass = String.valueOf(passord.getPassword());
 
         //END TESTING
-            bot.setLogin(login);
-            bot.setPassword(password);
+            bot.setLogin(log);
+            bot.setPassword(pass);
             bot.setRegisterMode(true);
             new Thread(bot).start();
         }
