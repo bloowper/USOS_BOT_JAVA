@@ -237,10 +237,3 @@ public class GUI extends JFrame implements Runnable {
 
 
 
-class GUIrunner{
-    public static void main(String[] args) {
-        GUI gui = new GUI();
-        SwingUtilities.invokeLater(gui);
-
-    }
-}

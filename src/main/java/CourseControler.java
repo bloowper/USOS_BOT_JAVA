@@ -144,24 +144,24 @@ public class CourseControler {
 
 
 
-//Only for testing GUI
-class courseControlerTESTER{
-    public static void main(String[] args) {
-
-        CourseControler courseControler = new CourseControler();
-        courseControler.add(new CourseModel("Matematyka","Http//matematyka",254,new Vector<Integer>(List.of(5, 4))));
-        courseControler.add(new CourseModel("Fizyka","Http//fizyka",234,new Vector<Integer>(List.of(5, 4))));
-        courseControler.add(new CourseModel("Algorytmy","Http//algorytmy",123,new Vector<Integer>(List.of(5, 4))));
-
-        JTable view = courseControler.getView();
-
-        JFrame jFrame = new JFrame();
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        jFrame.getContentPane().add(new JScrollPane(view));
-
-        jFrame.setLocationRelativeTo(null);
-        jFrame.pack();
-        jFrame.setVisible(true);
-    }
-}
+////Only for testing GUI
+//class courseControlerTESTER{
+//    public static void main(String[] args) {
+//
+//        CourseControler courseControler = new CourseControler();
+//        courseControler.add(new CourseModel("Matematyka","Http//matematyka",254,new Vector<Integer>(List.of(5, 4))));
+//        courseControler.add(new CourseModel("Fizyka","Http//fizyka",234,new Vector<Integer>(List.of(5, 4))));
+//        courseControler.add(new CourseModel("Algorytmy","Http//algorytmy",123,new Vector<Integer>(List.of(5, 4))));
+//
+//        JTable view = courseControler.getView();
+//
+//        JFrame jFrame = new JFrame();
+//        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//        jFrame.getContentPane().add(new JScrollPane(view));
+//
+//        jFrame.setLocationRelativeTo(null);
+//        jFrame.pack();
+//        jFrame.setVisible(true);
+//    }
+//}
